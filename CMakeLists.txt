@@ -1,11 +1,16 @@
-cmake_minimum_required(VERSION 3.28)
-project(Marc_ROVER C)
+cmake_minimum_required(VERSION 3.27)
+project(untitled1 C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(.)
-
-add_executable(Marc_ROVER
-        main.c
-        timer.c
-        timer.h)
+add_executable(untitled1 main.c
+        loc.c
+        loc.h
+        moves.c
+        moves.h
+        map.c
+        map.h
+        queue.c
+        queue.h
+        stack.c
+        stack.h)
