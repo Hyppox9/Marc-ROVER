@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "map.h"
+#include "moves.h"
 
 int main() {
     t_map map;
@@ -32,5 +33,6 @@ int main() {
         printf("\n");
     }
     displayMap(map);
+
     return 0;
 }
