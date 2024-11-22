@@ -1,9 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "map.h"
 #include "moves.h"
+#include "choice.h"
+#include <time.h>
 
 int main() {
     t_map map;
+    srand(time(NULL));
+    // type de structure avec le nom du mouvement et sa probabilité:
+
 
     // The following preprocessor directive checks if the code is being compiled on a Windows system.
     // If either _WIN32 or _WIN64 is defined, it means we are on a Windows platform.
@@ -33,6 +39,10 @@ int main() {
         printf("\n");
     }
     displayMap(map);
+
+    Possible_Move move;
+    selectMoves(&move);
+    //freeTree();
 
     return 0;
 }
