@@ -79,3 +79,26 @@ int getCostAtPosition(t_map map, t_position pos) {
     // Retourner le coût à la position spécifiée
     return map.costs[pos.y][pos.x];
 }
+
+t_treeNode* createNode(int value) {
+    t_treeNode* newNode = (t_treeNode*)malloc(sizeof(t_treeNode));
+    newNode->value = value;
+    for (int i = 0; i < 9; i++) {
+        newNode->subBranches[i] = NULL; // Initialiser les sous-branches à NULL
+    }
+    return newNode;
+}
+
+void printTree(t_treeNode* node, int level) {
+    if (node == NULL) return;
+
+    // Affichage de la valeur du nœud
+    printf("%*s%d\n", level * 4, "", node->value); // Indentation dynamique
+
+    // Affichage des sous-branches
+    for (int i = 0; i < 9; i++) {
+        if (node->subBranches[i] != NULL) {
+            printTree(node->subBranches[i], level + 1);
+        }
+    }
+}

@@ -24,9 +24,11 @@ typedef struct Possible_Move {
 
 typedef struct s_treeNode {
     int value;
-    struct Node* subBranches[8];
+    struct s_treeNode* subBranches[9];
 } t_treeNode;
 
 void selectMoves(Possible_Move*);
 int getCostAtPosition(t_map, t_position);
+t_treeNode* createNode(int);
+void printTree(t_treeNode*, int);
 #endif //UNTITLED1_CHOICE_H

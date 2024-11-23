@@ -42,7 +42,14 @@ int main() {
 
     Possible_Move move;
     selectMoves(&move);
-    //freeTree();
-
+    /*
+    t_treeNode* root = createNode(1);
+    root->subBranches[0] = createNode(2);
+    root->subBranches[1] = createNode(3);
+    root->subBranches[0]->subBranches[0] = createNode(4);
+    root->subBranches[0]->subBranches[1] = createNode(5);
+    root->subBranches[1]->subBranches[0] = createNode(4);
+    printTree(root, 0);
+    */
     return 0;
 }
