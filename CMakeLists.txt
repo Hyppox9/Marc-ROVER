@@ -15,4 +15,5 @@ add_executable(untitled1 main.c
         stack.c
         stack.h
         choice.c
-        choice.h)
+        choice.h
+)
