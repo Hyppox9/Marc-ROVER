@@ -36,16 +36,17 @@ Possible_Node_Move* selectMoves(Possible_Node_Move* move) {
     while (current != NULL) {
         int randomValue = valeurAleatoire(totalChances);
 
-        // Sélectionner un mouvement basé sur la valeur aléatoire
-        int cumulativeProbability = 0;
-        for (int j = 0; j < 7; j++) {
-            cumulativeProbability += moves[j].probability;
-            if (randomValue < cumulativeProbability) {
-                current->name = moves[j].name;
-                moves[j].probability--; // Décrémenter la probabilité choisie
-                break;
-            }
-        }
+		int cumulativeProbability = 0;
+		for (int j = 0; j < 7; j++) {
+			cumulativeProbability += moves[j].probability;
+			if (randomValue < cumulativeProbability) {
+				current->name = moves[j].name;
+				moves[j].probability--; // Décrémenter la probabilité choisie
+				totalChances--;
+				break;
+			}
+		}
+
         current = current->next; // Passer au prochain mouvement
     }
 
@@ -307,9 +308,9 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
 
 BetterChoice calculatebetter(t_treeNode* node) {
     int test =0;
-    int max = 0;
+    int min = 1000;
     BetterChoice better;better.cost = 0;better.loc.pos.x = 0;better.loc.pos.y = 0;better.loc.ori = NORTH;
-    int a,b,c,d,e =0;
+    int a,b,c,d,e,f =0;
     if (node != NULL){
         a = node->value.cost;
         for (int i=0;i<9;i++){
@@ -324,12 +325,17 @@ BetterChoice calculatebetter(t_treeNode* node) {
                                 for (int l=0;l<9;l++){
                                     if (node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l] != NULL){
                                         e = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.cost + d;
-                                        if (e>max && e<1000){
-                                            better.cost = e;
-                                            better.loc.pos.x = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.pos.x;
-                                            better.loc.pos.y = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.pos.y;
-                                            better.loc.ori = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.ori;
-                                            max = e;
+                                        for (int m=0;m<9;m++){
+                                            if (node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m] != NULL){
+                                                f = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.cost + e;
+                                                if (node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.cost < min && e<1000){
+                                                    better.cost = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.cost;
+                                                    better.loc.pos.x = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.loc.pos.x;
+                                                    better.loc.pos.y = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.loc.pos.y;
+                                                    better.loc.ori = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.loc.ori;
+                                                    min = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->subBranches[m]->value.cost;
+                                                }
+                                            }
                                         }
                                     }
                                 }
