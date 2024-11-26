@@ -39,37 +39,43 @@ int main() {
         printf("\n");
     }
     displayMap(map);
-
-    //Possible_Node_Move *move = malloc(sizeof(Possible_Node_Move));
-    Possible_Node_Move *move = malloc(9*sizeof(Possible_Node_Move));
-    move = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
-    move->next->next->next->next->next->next->next->next->next = NULL;
-
-    selectMoves(move);
-    Possible_Node_Move *current = move;
-    print_move(move);
-
     t_localisation robot_loc;
     robot_loc.ori = NORTH;
     robot_loc.pos.x = 4;
     robot_loc.pos.y = 4;
+    while (robot_loc.pos.x != 2 && robot_loc.pos.y != 1){
+        Possible_Node_Move *move = malloc(9*sizeof(Possible_Node_Move));
+        move = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next->next->next->next->next = (Possible_Node_Move*) malloc(9*sizeof(Possible_Node_Move));
+        move->next->next->next->next->next->next->next->next->next = NULL;
 
-    t_treeNode* root = set_arbre_choix(robot_loc, move,map);
-    //printf("%d",root->value.cost);
+        selectMoves(move);
+        Possible_Node_Move *current = move;
+        //print_move(move);
 
 
-    //t_position posValue = {robot_loc.pos.x,robot_loc.pos.y};
-    //t_treeNode* root =  createNode(setNode_in_Tree(robot_loc,posValue, *move,map));
 
-    printTree(root, 0);
+        t_treeNode* root = set_arbre_choix(robot_loc, move,map);
+        //printf("%d",root->value.cost);
+
+
+        //t_position posValue = {robot_loc.pos.x,robot_loc.pos.y};
+        //t_treeNode* root =  createNode(setNode_in_Tree(robot_loc,posValue, *move,map));
+
+        //printTree(root, 0);
+        BetterChoice choice = calculatebetter(root);
+        printf("\nMeilleur prix a %d au position x = %d et y = %d",choice.cost,choice.loc.pos.x,choice.loc.pos.y);
+        robot_loc.pos.x = choice.loc.pos.x;
+        robot_loc.pos.y = choice.loc.pos.y;
+        robot_loc.ori = choice.loc.ori;
+    }
 
 
 

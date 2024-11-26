@@ -255,7 +255,8 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
             loc = root->subBranches[i]->value.loc;
             posValue.x = loc.pos.x;
             posValue.y = loc.pos.y;
-            if (j != i ){
+            if (j != i){
+                if (root->subBranches[i]->value.cost > 1000) break;
                 moov_choose.name = root->subBranches[i]->value.name;
                 root->subBranches[i]->subBranches[k] = createNode(setNode_in_Tree(loc, posValue, moov_choose, map));
                 int m = 0;
@@ -263,7 +264,8 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
                     loc = root->subBranches[i]->subBranches[k]->value.loc;
                     posValue.x = loc.pos.x;
                     posValue.y = loc.pos.y;
-                    if(l != i && l != j ){
+                    if(l != i && l != j){
+                        if (root->subBranches[i]->subBranches[k]->value.cost > 1000) break;
                         moov_choose.name = root->subBranches[i]->subBranches[k]->value.name;
                         root->subBranches[i]->subBranches[k]->subBranches[m] = createNode(setNode_in_Tree(loc, posValue, moov_choose, map));
                         int n = 0;
@@ -271,7 +273,8 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
                             loc = root->subBranches[i]->subBranches[k]->subBranches[m]->value.loc;
                             posValue.x = loc.pos.x;
                             posValue.y = loc.pos.y;
-                            if(o != i && o != j && o != l ){
+                            if(o != i && o != j){
+                                if (root->subBranches[i]->subBranches[k]->subBranches[m]->value.cost > 1000) break;
                                 moov_choose.name = root->subBranches[i]->subBranches[k]->subBranches[m]->value.name;
                                 root->subBranches[i]->subBranches[k]->subBranches[m]->subBranches[n] = createNode(setNode_in_Tree(loc, posValue, moov_choose, map));
                                 int p = 0;
@@ -280,6 +283,7 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
                                     posValue.x = loc.pos.x;
                                     posValue.y = loc.pos.y;
                                     if(q != i && q != j && q != l && q != o){
+                                        if (root->subBranches[i]->subBranches[k]->subBranches[m]->subBranches[n]->value.cost > 1000) break;
                                         moov_choose.name = root->subBranches[i]->subBranches[k]->subBranches[m]->subBranches[n]->value.name;
                                         root->subBranches[i]->subBranches[k]->subBranches[m]->subBranches[n]->subBranches[p] = createNode(setNode_in_Tree(loc, posValue, moov_choose, map));
                                         p++;
@@ -295,8 +299,46 @@ t_treeNode *set_arbre_choix(t_localisation loc, Possible_Node_Move *move,t_map m
             }
         }
         current = current->next;
-        printf("\n%d",i);
+        //printf("\n%d",i);
         i++;
     }
     return root;
+}
+
+BetterChoice calculatebetter(t_treeNode* node) {
+    int test =0;
+    int max = 0;
+    BetterChoice better;better.cost = 0;better.loc.pos.x = 0;better.loc.pos.y = 0;better.loc.ori = NORTH;
+    int a,b,c,d,e =0;
+    if (node != NULL){
+        a = node->value.cost;
+        for (int i=0;i<9;i++){
+            if (node->subBranches[i] != NULL) {
+                b = node->subBranches[i]->value.cost + a;
+                for (int j=0;j<9;j++){
+                    if (node->subBranches[i]->subBranches[j] != NULL){
+                        c = node->subBranches[i]->subBranches[j]->value.cost + b;
+                        for (int k=0;k<9;k++){
+                            if (node->subBranches[i]->subBranches[j]->subBranches[k] != NULL){
+                                d = node->subBranches[i]->subBranches[j]->subBranches[k]->value.cost + c;
+                                for (int l=0;l<9;l++){
+                                    if (node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l] != NULL){
+                                        e = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.cost + d;
+                                        if (e>max && e<1000){
+                                            better.cost = e;
+                                            better.loc.pos.x = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.pos.x;
+                                            better.loc.pos.y = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.pos.y;
+                                            better.loc.ori = node->subBranches[i]->subBranches[j]->subBranches[k]->subBranches[l]->value.loc.ori;
+                                            max = e;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return better;
 }

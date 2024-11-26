@@ -28,7 +28,13 @@ typedef struct s_treeNode {
     struct s_treeNode* subBranches[9];
 } t_treeNode;
 
+typedef struct BetterChoice {
+    t_localisation loc;
+    int cost;
+} BetterChoice;
+
 Possible_Node_Move * selectMoves(Possible_Node_Move*);
+BetterChoice calculatebetter(t_treeNode*);
 int valeurAleatoire(int);
 void print_move(Possible_Node_Move *);
 t_treeNode* createNode(NodeMoveValue);
